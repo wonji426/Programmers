@@ -1,40 +1,29 @@
+import java.util.HashMap;
+import java.util.Map;
+
 class Solution {
     public int solution(int[] array) {
-        int answer = 0;
-        int countMax = 0;
-        int arrayMax = 0;
         
-        for (int i=0; i<array.length; i++) {
-            if (arrayMax < array[i]) {
-                arrayMax = array[i];
-            }
-        }
-        
-        int [] arr = new int[arrayMax+1];
-        
-        for (int j=0; j<array.length; j++) {
-            arr[array[j]]++;
-        }
-        
-        for (int k=0; k<arr.length; k++) {
-            if (countMax < arr[k]) {
-                countMax = arr[k];
-                answer = k;
-            }
-        }
-        
-        int count = 0;
-        for (int j=0; j<arr.length; j++) {
-            if (arr[j]==countMax) {
-                count++;
-            }
-        }
+        Map<Integer, Integer> countMap = new HashMap<>();
 
-        if (count > 1) {
-            return -1;
-        } else {
-        	return answer;
+        for(int num : array) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
         }
         
+        int maxCount = 0;
+        int answer = 0;
+
+        for(Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+            int num = entry.getKey();
+            int count = entry.getValue();
+            
+            if(count > maxCount) {
+                maxCount = count;
+                answer = num;
+            } else if(count == maxCount) {
+                answer = -1;
+            }
+        }
+        return answer;
     }
 }
